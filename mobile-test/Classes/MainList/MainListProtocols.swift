@@ -12,19 +12,17 @@ import UIKit
 protocol MainListViewProtocol: class {
     // PRESENTER -> VIEW
     var presenter: MainListPresenterProtocol? { get set }
-    func showData(superheros: [SuperheroEntity])
-    func updateData(superheros: [SuperheroEntity])
-//    func showDataFilterd(data: [SuperheroEntity])
-    func showFilters()
-    func showErrorMessage(message: String)
+    func setupView()
     func showSpinner()
     func hideAndStopSpinner()
+    func showFilters()
+    func showData(superheroes: [SuperheroEntity])
 }
 
 protocol MainListWireFrameProtocol: class {
     // PRESENTER -> WIREFRAME
     static func createMainListModule() -> UIViewController
-    func presentNewViewDetail(view: MainListViewProtocol, data: SuperheroEntity)
+    func presentNewViewDetail(view: MainListViewProtocol, data: Int)
 }
 
 protocol MainListPresenterProtocol: class {
@@ -38,21 +36,21 @@ protocol MainListPresenterProtocol: class {
     func searchData(text: String, offset: Int?)
     func filterData(text: String, data: [SuperheroEntity])
     func showFilters()
-    func showDetailView(data: SuperheroEntity)
+    func orderData(data: [SuperheroEntity], ordering: ComparisonResult) -> [SuperheroEntity]
+    func showDetailView(data: Int)
 }
 
 protocol MainListInteractorOutputProtocol: class {
 // INTERACTOR -> PRESENTER
-    func interactorPushDataPresenter(superheros: [SuperheroEntity]?, success: Bool)
-    func interactorPushUpdatedDataPresenter(superheros: [SuperheroEntity]?, success: Bool)
+    func interactorPushDataPresenter(superheroes: [SuperheroEntity]?, success: Bool)
 }
 
 protocol MainListInteractorInputProtocol: class {
     // PRESENTER -> INTERACTOR
     var presenter: MainListInteractorOutputProtocol? { get set }
     var textSearched: String { get set }
-    var superherosSearched: [SuperheroEntity] { get set }
-    var superheros: [SuperheroEntity] { get set }
+    var superheroesSearched: [SuperheroEntity] { get set }
+    var superheroes: [SuperheroEntity] { get set }
     var localDatamanager: MainListLocalDataManagerInputProtocol? { get set }
     var remoteDatamanager: MainListRemoteDataManagerInputProtocol? { get set }
     func interactorGetData(text: String, offset: Int?)
@@ -72,7 +70,7 @@ protocol MainListRemoteDataManagerInputProtocol: class {
 
 protocol MainListRemoteDataManagerOutputProtocol: class {
     // REMOTEDATAMANAGER -> INTERACTOR
-    func completionData(text: String, superheros: [SuperheroEntity]?, success: Bool)
+    func completionData(text: String, superheroes: [SuperheroEntity]?, success: Bool)
     func completionImageData(searched: Bool, imageData: Data?, shero: SuperheroEntity?, success: Bool)
 }
 

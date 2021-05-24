@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class MainListPresenter  {
     
@@ -18,23 +19,26 @@ class MainListPresenter  {
 }
 
 extension MainListPresenter: MainListPresenterProtocol {
+    
     func filterData(text: String, data: [SuperheroEntity]) {
         if text.isEmpty {
             interactor?.interactorGetData(text: "", offset: nil)
         }
     }
     
-    // TODO: implement presenter methods
     func viewDidLoad() {
+        view?.setupView()
         interactor?.interactorGetData(text: "", offset: nil)
         view?.showSpinner()
     }
     
     func loadImageData(searched: Bool, shero: SuperheroEntity) {
+//        Gets the data associated to the url image of the superhero
         interactor?.interactorGetImageData(searched: searched, shero: shero)
     }
     
     func searchData(text: String, offset: Int?) {
+//        Searching specific superhero name
         interactor?.interactorGetData(text: text, offset: offset)
         view?.showSpinner()
     }
@@ -43,34 +47,38 @@ extension MainListPresenter: MainListPresenterProtocol {
         view?.showFilters()
     }
     
-    func showDetailView(data: SuperheroEntity) {
+    func orderData(data: [SuperheroEntity], ordering: ComparisonResult) -> [SuperheroEntity] {
+//        Sorts the data by comparisong
+        data.sorted { (sh1, sh2) -> Bool in
+                    let superhero1 = sh1.name
+                    let superhero2 = sh2.name
+            return (superhero1!.localizedCaseInsensitiveCompare(superhero2!) ==  ordering)
+        }
+    }
+    
+    func showDetailView(data: Int) {
+//        Presenting the detail of the superhero
         wireFrame?.presentNewViewDetail(view: view!, data: data)
     }
+    
 }
 
 extension MainListPresenter: MainListInteractorOutputProtocol {
-    // TODO: implement interactor output methods
-    func interactorPushDataPresenter(superheros: [SuperheroEntity]?, success: Bool) {
-        if success && superheros != nil && superheros!.count > 0{
-            view?.showData(superheros: superheros!)
-        }else if success && superheros != nil && superheros!.count == 0 {
-            view?.showErrorMessage(message: "No hay más datos a mostrar")
+
+    func interactorPushDataPresenter(superheroes: [SuperheroEntity]?, success: Bool) {
+//        Retrieved data from server and presents error or the data
+        if success && superheroes != nil && superheroes!.count > 0{
+            view?.showData(superheroes: superheroes!)
+        }else if success && superheroes != nil && superheroes!.count == 0 {
+            if let vc = view as? UIViewController {
+                Utils.showErrorMessage(vc: vc, message: Utils.localizedString(key: "str_no_more_data"))
+            }
         }else {
-            view?.showErrorMessage(message: "Se ha producido un error recuperando los datos")
+            if let vc = view as? UIViewController {
+                Utils.showErrorMessage(vc: vc, message: Utils.localizedString(key: "str_error_retrieving_data"))
+            }
         }
         
-        view?.hideAndStopSpinner()
-    }
-    
-    func interactorPushUpdatedDataPresenter(superheros: [SuperheroEntity]?, success: Bool) {
-        if success && superheros != nil && superheros!.count > 0{
-            view?.updateData(superheros: superheros!)
-        }else if success && superheros != nil && superheros!.count == 0 {
-            view?.showErrorMessage(message: "No hay más datos a mostrar")
-        }else {
-            view?.showErrorMessage(message: "Se ha producido un error recuperando los datos")
-        }
-
         view?.hideAndStopSpinner()
     }
 }

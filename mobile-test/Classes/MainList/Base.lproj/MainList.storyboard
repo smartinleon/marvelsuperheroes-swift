@@ -13,11 +13,11 @@
             <objects>
                 <viewController storyboardIdentifier="MainListView" id="Yrt-EF-PLq" customClass="MainListView" customModule="mobile_test" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XBQ-fI-trX">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="838"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F58-ie-S7G">
-                                <rect key="frame" x="0.0" y="113" width="428" height="100"/>
+                                <rect key="frame" x="0.0" y="25" width="428" height="100"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_marvel" translatesAutoresizingMaskIntoConstraints="NO" id="xwI-0c-oTp">
                                         <rect key="frame" x="0.0" y="0.0" width="428" height="100"/>
@@ -30,7 +30,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7bV-Cs-7L3">
-                                <rect key="frame" x="0.0" y="213" width="428" height="713"/>
+                                <rect key="frame" x="0.0" y="125" width="428" height="713"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QRF-bm-cLt">
                                         <rect key="frame" x="0.0" y="0.0" width="428" height="713"/>
@@ -67,7 +67,7 @@
                                                         </connections>
                                                     </button>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slider.vertical.3" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="eei-xe-r5f">
-                                                        <rect key="frame" x="10" y="9" width="20" height="16"/>
+                                                        <rect key="frame" x="10" y="8.9999999999999787" width="20" height="15.999999999999998"/>
                                                         <color key="tintColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     </imageView>
                                                 </subviews>
@@ -90,7 +90,7 @@
                                                         </connections>
                                                     </button>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="magnifyingglass" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="7sd-NV-GEs">
-                                                        <rect key="frame" x="10" y="8" width="20" height="18"/>
+                                                        <rect key="frame" x="10" y="8.3333333333333321" width="20" height="18"/>
                                                         <color key="tintColor" red="0.33333333329999998" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     </imageView>
                                                 </subviews>
@@ -118,31 +118,31 @@
                                                     <constraint firstAttribute="height" constant="579" id="ZVE-bY-jBr"/>
                                                 </constraints>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SuperheroCell" rowHeight="100" id="Vkn-5w-MOQ" customClass="SuperheroTableViewCell" customModule="mobile_test" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="28" width="428" height="100"/>
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SuperheroCell" rowHeight="90" id="Vkn-5w-MOQ" customClass="SuperheroTableViewCell" customModule="mobile_test" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="28" width="428" height="90"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Vkn-5w-MOQ" id="4JJ-3z-jyk">
-                                                            <rect key="frame" x="0.0" y="0.0" width="428" height="100"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="428" height="90"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uqk-uG-GhJ">
-                                                                    <rect key="frame" x="20" y="10" width="388" height="80"/>
+                                                                    <rect key="frame" x="20" y="5" width="388" height="80"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_marvel" translatesAutoresizingMaskIntoConstraints="NO" id="gVA-GU-4RF">
-                                                                            <rect key="frame" x="10" y="5" width="70" height="70"/>
-                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                            <rect key="frame" x="10" y="10" width="60" height="60"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                                                         </imageView>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="44V-Ja-yCr">
-                                                                            <rect key="frame" x="90" y="5" width="288" height="70"/>
-                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="44V-Ja-yCr">
+                                                                            <rect key="frame" x="80" y="0.0" width="258" height="80"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="arrowshape.zigzag.right.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Mm2-68-ibS">
-                                                                            <rect key="frame" x="348" y="26" width="30" height="30"/>
-                                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="chevron.right" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Mm2-68-ibS">
+                                                                            <rect key="frame" x="348" y="28" width="20" height="20"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
                                                                             <color key="tintColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                         </imageView>
                                                                     </subviews>
@@ -234,7 +234,7 @@
             <objects>
                 <navigationController storyboardIdentifier="MainListNC" automaticallyAdjustsScrollViewInsets="NO" id="Es3-3m-srG" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="DAL-WN-GNe">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="DAL-WN-GNe">
                         <rect key="frame" x="0.0" y="44" width="428" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -249,7 +249,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrowshape.zigzag.right.fill" catalog="system" width="128" height="93"/>
+        <image name="chevron.right" catalog="system" width="96" height="128"/>
         <image name="icon_marvel" width="170.66667175292969" height="170.66667175292969"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="slider.vertical.3" catalog="system" width="128" height="111"/>

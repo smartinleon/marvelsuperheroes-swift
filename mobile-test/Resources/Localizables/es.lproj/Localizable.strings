@@ -1,0 +1,16 @@
+/* 
+  Localizables.strings
+  mobile-test
+
+  Created by sergio.martin.leon on 24/05/2021.
+  
+*/
+
+"title_main" = "Superhéroes Marvel";
+"title_order_by_name" = "Ordenación por nombre:";
+"title_order_asc" = "Ordenación ascendente";
+"title_order_desc" = "Ordenación descendente";
+"str_no_description" = "No description";
+"str_exit" = "Exit";
+"str_no_more_data" = "No hay más datos a mostrar";
+"str_error_retrieving_data" = "Se ha producido un error recuperando los datos";

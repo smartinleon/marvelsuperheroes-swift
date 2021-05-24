@@ -19,9 +19,11 @@ class SuperheroTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        view_data.layer.cornerRadius = 5
+        view_data.setCornerRadius(cornerRadius: 5)
         
+        iv_shero.setCornerRadius(cornerRadius: iv_shero.bounds.width / 2)
         iv_shero.layer.masksToBounds = true
-        iv_shero.layer.cornerRadius =  iv_shero.bounds.width / 2
+        iv_shero.layer.borderColor = UIColor.darkGray.cgColor
+        iv_shero.layer.borderWidth = 1
     }
 }

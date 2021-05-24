@@ -1,0 +1,9 @@
+
+/* Class = "UILabel"; text = "?"; ObjectID = "44V-Ja-yCr"; */
+"44V-Ja-yCr.text" = "?";
+
+/* Class = "UITextField"; placeholder = "Nombre ..."; ObjectID = "9Yd-H1-0Q8"; */
+"9Yd-H1-0Q8.placeholder" = "Name ...";
+
+/* Class = "UILabel"; text = "¿Quiéres conocer más sobre tus personajes de Marvel favoritos?\n\n¿A qué esperas? Accede al detalle de cada uno de ellos."; ObjectID = "Uik-9T-Bbc"; */
+"Uik-9T-Bbc.text" = "Do you want to know more about your favorite Marvel characters?\n\nWhat are you waiting for? Access the details of each one of them.";

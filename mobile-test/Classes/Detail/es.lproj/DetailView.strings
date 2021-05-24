@@ -1,0 +1,33 @@
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "1bi-6f-pIg"; */
+"1bi-6f-pIg.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Más info"; ObjectID = "3gi-8R-Tmh"; */
+"3gi-8R-Tmh.normalTitle" = "Más info";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "NqI-xf-PKM"; */
+"NqI-xf-PKM.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Más info"; ObjectID = "Od2-pR-sRA"; */
+"Od2-pR-sRA.normalTitle" = "Más info";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "QGQ-BQ-VKz"; */
+"QGQ-BQ-VKz.text" = "Label";
+
+/* Class = "UILabel"; text = "Stories:"; ObjectID = "RZp-Vq-cJM"; */
+"RZp-Vq-cJM.text" = "Historias:";
+
+/* Class = "UILabel"; text = "Series:"; ObjectID = "Zkb-ky-wiw"; */
+"Zkb-ky-wiw.text" = "Series:";
+
+/* Class = "UILabel"; text = "Sin descripción"; ObjectID = "jcr-Ln-Muh"; */
+"jcr-Ln-Muh.text" = "Sin descripción";
+
+/* Class = "UILabel"; text = "Descripción:"; ObjectID = "kQ4-Ka-Ogf"; */
+"kQ4-Ka-Ogf.text" = "Descripción:";
+
+/* Class = "UILabel"; text = "?"; ObjectID = "tvG-p9-43U"; */
+"tvG-p9-43U.text" = "?";
+
+/* Class = "UILabel"; text = "Comics:"; ObjectID = "yQb-Rk-SGp"; */
+"yQb-Rk-SGp.text" = "Comics:";

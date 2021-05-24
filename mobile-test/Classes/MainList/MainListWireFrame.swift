@@ -34,7 +34,7 @@ class MainListWireFrame: MainListWireFrameProtocol {
         return UIViewController()
     }
     
-    func presentNewViewDetail(view: MainListViewProtocol, data: SuperheroEntity) {
+    func presentNewViewDetail(view: MainListViewProtocol, data: Int) {
         let newDetail = DetailWireFrame.createDetailModule(data: data)
         if let newView = view as? UIViewController {
             newView.navigationController?.pushViewController(newDetail, animated: true)

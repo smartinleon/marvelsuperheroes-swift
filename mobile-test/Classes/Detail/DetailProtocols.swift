@@ -12,11 +12,15 @@ import UIKit
 protocol DetailViewProtocol: class {
     // PRESENTER -> VIEW
     var presenter: DetailPresenterProtocol? { get set }
+    func setupView()
+    func showSpinner()
+    func hideAndStopSpinner()
+    func showData(shero: SuperheroEntity)
 }
 
 protocol DetailWireFrameProtocol: class {
     // PRESENTER -> WIREFRAME
-    static func createDetailModule(data: SuperheroEntity) -> UIViewController
+    static func createDetailModule(data: Int) -> UIViewController
 }
 
 protocol DetailPresenterProtocol: class {
@@ -24,13 +28,15 @@ protocol DetailPresenterProtocol: class {
     var view: DetailViewProtocol? { get set }
     var interactor: DetailInteractorInputProtocol? { get set }
     var wireFrame: DetailWireFrameProtocol? { get set }
-    var shero: SuperheroEntity? { get set }
+    var id: Int? { get set }
     
     func viewDidLoad()
+    func showUrl(shero: SuperheroEntity, type: String)
 }
 
 protocol DetailInteractorOutputProtocol: class {
 // INTERACTOR -> PRESENTER
+    func interactorPushDataPresenter(shero: SuperheroEntity?, success: Bool)
 }
 
 protocol DetailInteractorInputProtocol: class {
@@ -38,6 +44,8 @@ protocol DetailInteractorInputProtocol: class {
     var presenter: DetailInteractorOutputProtocol? { get set }
     var localDatamanager: DetailLocalDataManagerInputProtocol? { get set }
     var remoteDatamanager: DetailRemoteDataManagerInputProtocol? { get set }
+    var shero: SuperheroEntity? { get set }
+    func interactorGetData(id: Int)
 }
 
 protocol DetailDataManagerInputProtocol: class {
@@ -47,10 +55,14 @@ protocol DetailDataManagerInputProtocol: class {
 protocol DetailRemoteDataManagerInputProtocol: class {
     // INTERACTOR -> REMOTEDATAMANAGER
     var remoteRequestHandler: DetailRemoteDataManagerOutputProtocol? { get set }
+    func externalGetData(id: Int)
+    func externalGetSHeroImageData(shero: SuperheroEntity)
 }
 
 protocol DetailRemoteDataManagerOutputProtocol: class {
     // REMOTEDATAMANAGER -> INTERACTOR
+    func completionData(shero: SuperheroEntity?, success: Bool)
+    func completionImageData(imageData: Data?, success: Bool)
 }
 
 protocol DetailLocalDataManagerInputProtocol: class {

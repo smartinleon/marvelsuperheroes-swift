@@ -14,6 +14,7 @@ import CryptoKit
 class MainListRemoteDataManager:MainListRemoteDataManagerInputProtocol {
     
     var remoteRequestHandler: MainListRemoteDataManagerOutputProtocol?
+    let o = Obfuscator()
     
     func externalGetData(text: String, offset: Int?) {
         let dateFormatter = DateFormatter()
@@ -21,9 +22,9 @@ class MainListRemoteDataManager:MainListRemoteDataManagerInputProtocol {
         let dateStr = dateFormatter.string(from: Date())
         
         let timestamp = dateFormatter.date(from: dateStr)!.timeIntervalSince1970
-        let md5Diggest = (String(Int(timestamp)) + "c768ec44bbb529f954a7bfff8f902b0f45436095" + "38410d7f228ffe8925ae7359e3b26f3a").MD5
+        let md5Diggest = (String(Int(timestamp)) + o.reveal(key: Constants.ObfuscatedConstants.first) + o.reveal(key: Constants.ObfuscatedConstants.second)).MD5
         
-        var url = Constants.urls.URL_BASE_MARVEL + Constants.endpoints.GET_CHARACTERS + "?ts=\(String(Int(timestamp)))&apikey=38410d7f228ffe8925ae7359e3b26f3a&hash=\(md5Diggest)&limit=10"
+        var url = Constants.urls.URL_BASE_MARVEL + Constants.endpoints.GET_CHARACTERS + "?ts=\(String(Int(timestamp)))&apikey=\(o.reveal(key: Constants.ObfuscatedConstants.second))&hash=\(md5Diggest)&limit=10"
         
         if let off = offset {
             url += "&offset=\(off)"
@@ -43,15 +44,15 @@ class MainListRemoteDataManager:MainListRemoteDataManagerInputProtocol {
                 do{
                     let superheroData = try JSONDecoder().decode(Superhero.self, from: response.data!)
                     if let sheroResults = superheroData.data?.results {
-                        remoteRequestHandler?.completionData(text: text, superheros: sheroResults, success: true)
+                        remoteRequestHandler?.completionData(text: text, superheroes: sheroResults, success: true)
                     }else {
-                        remoteRequestHandler?.completionData(text: text, superheros: nil, success: false)
+                        remoteRequestHandler?.completionData(text: text, superheroes: nil, success: false)
                     }
                 }catch{
-                    remoteRequestHandler?.completionData(text: text, superheros: nil, success: false)
+                    remoteRequestHandler?.completionData(text: text, superheroes: nil, success: false)
                 }
             case .failure:
-                remoteRequestHandler?.completionData(text: text, superheros: nil, success: false)
+                remoteRequestHandler?.completionData(text: text, superheroes: nil, success: false)
             }
         }
     }
