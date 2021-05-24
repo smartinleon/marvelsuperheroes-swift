@@ -51,29 +51,6 @@ protocol MainListInteractorInputProtocol: class {
     var textSearched: String { get set }
     var superheroesSearched: [SuperheroEntity] { get set }
     var superheroes: [SuperheroEntity] { get set }
-    var localDatamanager: MainListLocalDataManagerInputProtocol? { get set }
-    var remoteDatamanager: MainListRemoteDataManagerInputProtocol? { get set }
     func interactorGetData(text: String, offset: Int?)
     func interactorGetImageData(searched: Bool, shero: SuperheroEntity)
-}
-
-protocol MainListDataManagerInputProtocol: class {
-    // INTERACTOR -> DATAMANAGER
-}
-
-protocol MainListRemoteDataManagerInputProtocol: class {
-    // INTERACTOR -> REMOTEDATAMANAGER
-    var remoteRequestHandler: MainListRemoteDataManagerOutputProtocol? { get set }
-    func externalGetData(text: String, offset: Int?)
-    func externalGetSHeroImageData(searched: Bool, shero: SuperheroEntity)
-}
-
-protocol MainListRemoteDataManagerOutputProtocol: class {
-    // REMOTEDATAMANAGER -> INTERACTOR
-    func completionData(text: String, superheroes: [SuperheroEntity]?, success: Bool)
-    func completionImageData(searched: Bool, imageData: Data?, shero: SuperheroEntity?, success: Bool)
-}
-
-protocol MainListLocalDataManagerInputProtocol: class {
-    // INTERACTOR -> LOCALDATAMANAGER
 }

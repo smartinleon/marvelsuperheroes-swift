@@ -15,9 +15,7 @@ class MainListWireFrame: MainListWireFrameProtocol {
         let navController = mainStoryboard.instantiateViewController(withIdentifier: "MainListNC")
         if let view = navController.children.first as? MainListView {
             let presenter: MainListPresenterProtocol & MainListInteractorOutputProtocol = MainListPresenter()
-            let interactor: MainListInteractorInputProtocol & MainListRemoteDataManagerOutputProtocol = MainListInteractor()
-            let localDataManager: MainListLocalDataManagerInputProtocol = MainListLocalDataManager()
-            let remoteDataManager: MainListRemoteDataManagerInputProtocol = MainListRemoteDataManager()
+            let interactor: MainListInteractorInputProtocol = MainListInteractor()
             let wireFrame: MainListWireFrameProtocol = MainListWireFrame()
 
             view.presenter = presenter
@@ -25,9 +23,6 @@ class MainListWireFrame: MainListWireFrameProtocol {
             presenter.wireFrame = wireFrame
             presenter.interactor = interactor
             interactor.presenter = presenter
-            interactor.localDatamanager = localDataManager
-            interactor.remoteDatamanager = remoteDataManager
-            remoteDataManager.remoteRequestHandler = interactor
 
             return navController
         }

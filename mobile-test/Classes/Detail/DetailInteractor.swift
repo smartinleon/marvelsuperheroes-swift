@@ -12,31 +12,25 @@ class DetailInteractor: DetailInteractorInputProtocol {
 
     // MARK: Properties
     weak var presenter: DetailInteractorOutputProtocol?
-    var localDatamanager: DetailLocalDataManagerInputProtocol?
-    var remoteDatamanager: DetailRemoteDataManagerInputProtocol?
     var shero: SuperheroEntity?
 
     func interactorGetData(id: Int) {
-        remoteDatamanager!.externalGetData(id: id)
-    }
-}
+        APIClient.shared.externalGetData(id: id) { [self] data, success in
+            if data != nil{
+                shero = data?.first
+            }
 
-extension DetailInteractor: DetailRemoteDataManagerOutputProtocol {
-    
-    func completionData(shero: SuperheroEntity?, success: Bool) {
-        if success && shero != nil {
-            self.shero = shero
-            remoteDatamanager?.externalGetSHeroImageData(shero: shero!)
-        } else {
-            presenter?.interactorPushDataPresenter(shero: shero, success: false)
+            if success && shero != nil {
+                APIClient.shared.externalGetSHeroImageData(shero: shero!, completionHandler: { (data, success) in
+                    if success {
+                        self.shero?.thumbnail?.data = data
+                    }
+                    
+                    presenter?.interactorPushDataPresenter(shero: shero, success: success)
+                })
+            } else {
+                presenter?.interactorPushDataPresenter(shero: shero, success: false)
+            }
         }
-    }
-    
-    func completionImageData(imageData: Data?, success: Bool) {
-        if success && shero != nil {
-            self.shero?.thumbnail?.data = imageData
-        }
-        
-        presenter?.interactorPushDataPresenter(shero: shero, success: success)
     }
 }

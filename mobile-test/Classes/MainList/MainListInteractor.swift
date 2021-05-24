@@ -15,94 +15,89 @@ class MainListInteractor: MainListInteractorInputProtocol {
     var textSearched: String = "??????"
     var superheroes = [SuperheroEntity]()
     var superheroesSearched = [SuperheroEntity]()
-    var localDatamanager: MainListLocalDataManagerInputProtocol?
-    var remoteDatamanager: MainListRemoteDataManagerInputProtocol?
     
     func interactorGetData(text: String, offset: Int?) {
-        remoteDatamanager?.externalGetData(text: text, offset: offset)
-    }
-    
-    func interactorGetImageData(searched: Bool, shero: SuperheroEntity) {        remoteDatamanager?.externalGetSHeroImageData(searched: searched, shero: shero)
-    }
-}
-
-extension MainListInteractor: MainListRemoteDataManagerOutputProtocol {
-    
-    func completionData(text: String, superheroes: [SuperheroEntity]?, success: Bool) {
+        APIClient.shared.externalGetData(text: text, offset: offset) { [self] data, success in
 //        Returns the data retrieved from the server
-        if success && superheroes != nil && superheroes!.count > 0{
-            if !text.isEmpty{
-                if text.contains(textSearched){
-                    for shero in superheroes! {
-                        if !self.superheroesSearched.contains(where: {$0.id == shero.id}){
-                            self.superheroesSearched.append(shero)
+            if let dSheroes = data {
+                if success && dSheroes.count > 0{
+                    if !text.isEmpty{
+                        if text.contains(textSearched){
+                            for shero in dSheroes {
+                                if !self.superheroesSearched.contains(where: {$0.id == shero.id}){
+                                    self.superheroesSearched.append(shero)
+                                }
+                            }
+                            presenter?.interactorPushDataPresenter(superheroes: self.superheroesSearched, success: true)
+                        }else{
+                            textSearched = text
+                            superheroesSearched.removeAll()
+                            for shero in dSheroes {
+                                if !self.superheroesSearched.contains(where: {$0.id == shero.id}){
+                                    self.superheroesSearched.append(shero)
+                                }
+                            }
+                            presenter?.interactorPushDataPresenter(superheroes: self.superheroesSearched, success: true)
                         }
-                    }
-                    presenter?.interactorPushDataPresenter(superheroes: self.superheroesSearched, success: true)
-                }else{
-                    textSearched = text
-                    superheroesSearched.removeAll()
-                    for shero in superheroes! {
-                        if !self.superheroesSearched.contains(where: {$0.id == shero.id}){
-                            self.superheroesSearched.append(shero)
+                    }else{
+                        for shero in dSheroes {
+                            if !self.superheroes.contains(where: {$0.id == shero.id}){
+                                self.superheroes.append(shero)
+                            }
                         }
+                        presenter?.interactorPushDataPresenter(superheroes: self.superheroes, success: true)
                     }
-                    presenter?.interactorPushDataPresenter(superheroes: self.superheroesSearched, success: true)
+                }else if success && dSheroes.count == 0{
+                    presenter?.interactorPushDataPresenter(superheroes: dSheroes, success: true)
+                }else {
+                    presenter?.interactorPushDataPresenter(superheroes: nil, success: false)
                 }
-            }else{
-                for shero in superheroes! {
-                    if !self.superheroes.contains(where: {$0.id == shero.id}){
-                        self.superheroes.append(shero)
-                    }
-                }
-                presenter?.interactorPushDataPresenter(superheroes: self.superheroes, success: true)
+            }else {
+                presenter?.interactorPushDataPresenter(superheroes: nil, success: false)
             }
-        }else if success && superheroes != nil && superheroes!.count == 0{
-            presenter?.interactorPushDataPresenter(superheroes: superheroes, success: true)
-        }else {
-            presenter?.interactorPushDataPresenter(superheroes: nil, success: false)
         }
     }
     
-    func completionImageData(searched: Bool, imageData: Data?, shero: SuperheroEntity?, success: Bool) {
-//        Associate the data of the url image to the superhero
-        if searched {
-            if success && shero != nil && superheroesSearched.count > 0{
-                if var sheroSelected = superheroesSearched.first(where: { $0.id == shero?.id }) {
-                    sheroSelected.thumbnail?.data = imageData
-                    
-                    for i in 0...superheroesSearched.count - 1 {
-                        if superheroesSearched[i].id == sheroSelected.id {
-                            superheroesSearched[i] = sheroSelected
-                            break
+    func interactorGetImageData(searched: Bool, shero: SuperheroEntity) {
+        APIClient.shared.externalGetSHeroImageData(shero: shero) { [self] data, success in
+            if searched {
+                if success && superheroesSearched.count > 0{
+                    if var sheroSelected = superheroesSearched.first(where: { $0.id == shero.id }) {
+                        sheroSelected.thumbnail?.data = data
+                        
+                        for i in 0...superheroesSearched.count - 1 {
+                            if superheroesSearched[i].id == sheroSelected.id {
+                                superheroesSearched[i] = sheroSelected
+                                break
+                            }
                         }
                     }
                 }
-            }
-            
-            if superheroesSearched.count > 0 {
-                presenter?.interactorPushDataPresenter(superheroes: superheroesSearched, success: true)
-            }else {
-                presenter?.interactorPushDataPresenter(superheroes: superheroesSearched, success: false)
-            }
-        }else{
-            if success && shero != nil && superheroes.count > 0{
-                if var sheroSelected = superheroes.first(where: { $0.id == shero?.id }) {
-                    sheroSelected.thumbnail?.data = imageData
-                    
-                    for i in 0...superheroes.count - 1 {
-                        if superheroes[i].id == sheroSelected.id {
-                            superheroes[i] = sheroSelected
-                            break
+                
+                if superheroesSearched.count > 0 {
+                    presenter?.interactorPushDataPresenter(superheroes: superheroesSearched, success: true)
+                }else {
+                    presenter?.interactorPushDataPresenter(superheroes: superheroesSearched, success: false)
+                }
+            }else{
+                if success && superheroes.count > 0{
+                    if var sheroSelected = superheroes.first(where: { $0.id == shero.id }) {
+                        sheroSelected.thumbnail?.data = data
+                        
+                        for i in 0...superheroes.count - 1 {
+                            if superheroes[i].id == sheroSelected.id {
+                                superheroes[i] = sheroSelected
+                                break
+                            }
                         }
                     }
                 }
-            }
-            
-            if superheroes.count > 0 {
-                presenter?.interactorPushDataPresenter(superheroes: superheroes, success: true)
-            }else {
-                presenter?.interactorPushDataPresenter(superheroes: superheroes, success: false)
+                
+                if superheroes.count > 0 {
+                    presenter?.interactorPushDataPresenter(superheroes: superheroes, success: true)
+                }else {
+                    presenter?.interactorPushDataPresenter(superheroes: superheroes, success: false)
+                }
             }
         }
     }

@@ -42,29 +42,6 @@ protocol DetailInteractorOutputProtocol: class {
 protocol DetailInteractorInputProtocol: class {
     // PRESENTER -> INTERACTOR
     var presenter: DetailInteractorOutputProtocol? { get set }
-    var localDatamanager: DetailLocalDataManagerInputProtocol? { get set }
-    var remoteDatamanager: DetailRemoteDataManagerInputProtocol? { get set }
     var shero: SuperheroEntity? { get set }
     func interactorGetData(id: Int)
-}
-
-protocol DetailDataManagerInputProtocol: class {
-    // INTERACTOR -> DATAMANAGER
-}
-
-protocol DetailRemoteDataManagerInputProtocol: class {
-    // INTERACTOR -> REMOTEDATAMANAGER
-    var remoteRequestHandler: DetailRemoteDataManagerOutputProtocol? { get set }
-    func externalGetData(id: Int)
-    func externalGetSHeroImageData(shero: SuperheroEntity)
-}
-
-protocol DetailRemoteDataManagerOutputProtocol: class {
-    // REMOTEDATAMANAGER -> INTERACTOR
-    func completionData(shero: SuperheroEntity?, success: Bool)
-    func completionImageData(imageData: Data?, success: Bool)
-}
-
-protocol DetailLocalDataManagerInputProtocol: class {
-    // INTERACTOR -> LOCALDATAMANAGER
 }

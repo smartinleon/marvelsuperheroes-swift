@@ -10,7 +10,7 @@ class Obfuscator {
     // MARK: - Initialization
     
     init() {
-        self.salt = "\(String(describing: AppDelegate.self))\(String(describing: NSObject.self))\(String(describing: MainListRemoteDataManager.self))\(String(describing: DetailRemoteDataManager.self))"
+        self.salt = "\(String(describing: AppDelegate.self))\(String(describing: NSObject.self))\(String(describing: APIClient.self))"
     }
     
     init(with salt: String) {

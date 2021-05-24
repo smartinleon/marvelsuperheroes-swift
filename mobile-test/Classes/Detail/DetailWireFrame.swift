@@ -15,20 +15,14 @@ class DetailWireFrame: DetailWireFrameProtocol {
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: "DetailVC")
         if let view = viewController as? DetailView {
             let presenter: DetailPresenterProtocol & DetailInteractorOutputProtocol = DetailPresenter()
-            let interactor: DetailInteractorInputProtocol & DetailRemoteDataManagerOutputProtocol = DetailInteractor()
-            let localDataManager: DetailLocalDataManagerInputProtocol = DetailLocalDataManager()
-            let remoteDataManager: DetailRemoteDataManagerInputProtocol = DetailRemoteDataManager()
+            let interactor: DetailInteractorInputProtocol = DetailInteractor()
             let wireFrame: DetailWireFrameProtocol = DetailWireFrame()
-
             view.presenter = presenter
             presenter.view = view
             presenter.wireFrame = wireFrame
             presenter.interactor = interactor
             presenter.id = data
             interactor.presenter = presenter
-            interactor.localDatamanager = localDataManager
-            interactor.remoteDatamanager = remoteDataManager
-            remoteDataManager.remoteRequestHandler = interactor
 
             return viewController
         }

@@ -28,8 +28,8 @@ extension MainListPresenter: MainListPresenterProtocol {
     
     func viewDidLoad() {
         view?.setupView()
-        interactor?.interactorGetData(text: "", offset: nil)
         view?.showSpinner()
+        interactor?.interactorGetData(text: "", offset: nil)
     }
     
     func loadImageData(searched: Bool, shero: SuperheroEntity) {
@@ -39,8 +39,8 @@ extension MainListPresenter: MainListPresenterProtocol {
     
     func searchData(text: String, offset: Int?) {
 //        Searching specific superhero name
-        interactor?.interactorGetData(text: text, offset: offset)
         view?.showSpinner()
+        interactor?.interactorGetData(text: text, offset: offset)
     }
     
     func showFilters() {
