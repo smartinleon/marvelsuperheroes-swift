@@ -31,6 +31,11 @@ class MainListView: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        tap.delegate = self
+        view.addGestureRecognizer(tap)
+        
         presenter?.viewDidLoad()
     }
     
@@ -44,6 +49,20 @@ class MainListView: UIViewController {
     
     @IBAction func filtersAction(_ sender: Any) {
         presenter?.showFilters()
+    }
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
+        tf_search.resignFirstResponder()
+    }
+}
+
+extension MainListView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: tableView){
+            return false
+        }
+        
+        return true
     }
 }
 
@@ -128,12 +147,12 @@ extension MainListView: UITableViewDelegate, UITableViewDataSource, UIScrollView
             DispatchQueue.main.async {
                 cell.iv_shero?.image = UIImage(data: data)
             }
-        }else {
+        }/*else {
             let searched = !tf_search.text!.isEmpty
             DispatchQueue.global(qos: .background).async { [self] in
                 presenter?.loadImageData(searched: searched, shero: shero)
             }
-        }
+        }*/
         
         return cell
     }

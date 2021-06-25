@@ -32,7 +32,7 @@ protocol MainListPresenterProtocol: class {
     var wireFrame: MainListWireFrameProtocol? { get set }
     
     func viewDidLoad()
-    func loadImageData(searched: Bool, shero: SuperheroEntity)
+//    func loadImageData(searched: Bool, shero: SuperheroEntity)
     func searchData(text: String, offset: Int?)
     func filterData(text: String, data: [SuperheroEntity])
     func showFilters()
@@ -52,5 +52,5 @@ protocol MainListInteractorInputProtocol: class {
     var superheroesSearched: [SuperheroEntity] { get set }
     var superheroes: [SuperheroEntity] { get set }
     func interactorGetData(text: String, offset: Int?)
-    func interactorGetImageData(searched: Bool, shero: SuperheroEntity)
+    func interactorGetImageData(searched: Bool, shero: SuperheroEntity, group: DispatchGroup)
 }

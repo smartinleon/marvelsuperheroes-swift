@@ -32,10 +32,10 @@ extension MainListPresenter: MainListPresenterProtocol {
         interactor?.interactorGetData(text: "", offset: nil)
     }
     
-    func loadImageData(searched: Bool, shero: SuperheroEntity) {
-//        Gets the data associated to the url image of the superhero
-        interactor?.interactorGetImageData(searched: searched, shero: shero)
-    }
+//    func loadImageData(searched: Bool, shero: SuperheroEntity) {
+////        Gets the data associated to the url image of the superhero
+//        interactor?.interactorGetImageData(searched: searched, shero: shero)
+//    }
     
     func searchData(text: String, offset: Int?) {
 //        Searching specific superhero name
