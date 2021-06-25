@@ -24,28 +24,51 @@ class MainListInteractor: MainListInteractorInputProtocol {
                     if !text.isEmpty{
                         if text.contains(textSearched){
                             for shero in dSheroes {
-                                if !self.superheroesSearched.contains(where: {$0.id == shero.id}){
-                                    self.superheroesSearched.append(shero)
+                                if !superheroesSearched.contains(where: {$0.id == shero.id}){
+                                    superheroesSearched.append(shero)
                                 }
                             }
-                            presenter?.interactorPushDataPresenter(superheroes: self.superheroesSearched, success: true)
+                            presenter?.interactorPushDataPresenter(superheroes: superheroesSearched, success: true)
                         }else{
                             textSearched = text
                             superheroesSearched.removeAll()
                             for shero in dSheroes {
-                                if !self.superheroesSearched.contains(where: {$0.id == shero.id}){
-                                    self.superheroesSearched.append(shero)
+                                if !superheroesSearched.contains(where: {$0.id == shero.id}){
+                                    superheroesSearched.append(shero)
                                 }
                             }
-                            presenter?.interactorPushDataPresenter(superheroes: self.superheroesSearched, success: true)
+                            
+                            let group = DispatchGroup()
+                            
+//                            Retrieving images data from server
+                            for sheroData in superheroesSearched {
+                                group.enter()
+                                interactorGetImageData(searched: true, shero: sheroData, group: group)
+                            }
+                            
+                            group.notify(queue: .main) {
+                                presenter?.interactorPushDataPresenter(superheroes: superheroesSearched, success: true)
+                            }
                         }
                     }else{
                         for shero in dSheroes {
-                            if !self.superheroes.contains(where: {$0.id == shero.id}){
-                                self.superheroes.append(shero)
+                            if !superheroes.contains(where: {$0.id == shero.id}){
+                                superheroes.append(shero)
                             }
                         }
-                        presenter?.interactorPushDataPresenter(superheroes: self.superheroes, success: true)
+                        
+                        
+                        let group = DispatchGroup()
+                        
+//                            Retrieving images data from server
+                        for sheroData in superheroes {
+                            group.enter()
+                            interactorGetImageData(searched: false, shero: sheroData, group: group)
+                        }
+                        
+                        group.notify(queue: .main) {
+                            presenter?.interactorPushDataPresenter(superheroes: superheroes, success: true)
+                        }
                     }
                 }else if success && dSheroes.count == 0{
                     presenter?.interactorPushDataPresenter(superheroes: dSheroes, success: true)
@@ -58,7 +81,7 @@ class MainListInteractor: MainListInteractorInputProtocol {
         }
     }
     
-    func interactorGetImageData(searched: Bool, shero: SuperheroEntity) {
+    func interactorGetImageData(searched: Bool, shero: SuperheroEntity, group: DispatchGroup) {
         APIClient.shared.externalGetSHeroImageData(shero: shero) { [self] data, success in
             if searched {
                 if success && superheroesSearched.count > 0{
@@ -74,11 +97,7 @@ class MainListInteractor: MainListInteractorInputProtocol {
                     }
                 }
                 
-                if superheroesSearched.count > 0 {
-                    presenter?.interactorPushDataPresenter(superheroes: superheroesSearched, success: true)
-                }else {
-                    presenter?.interactorPushDataPresenter(superheroes: superheroesSearched, success: false)
-                }
+                group.leave()
             }else{
                 if success && superheroes.count > 0{
                     if var sheroSelected = superheroes.first(where: { $0.id == shero.id }) {
@@ -93,11 +112,7 @@ class MainListInteractor: MainListInteractorInputProtocol {
                     }
                 }
                 
-                if superheroes.count > 0 {
-                    presenter?.interactorPushDataPresenter(superheroes: superheroes, success: true)
-                }else {
-                    presenter?.interactorPushDataPresenter(superheroes: superheroes, success: false)
-                }
+                group.leave()
             }
         }
     }
