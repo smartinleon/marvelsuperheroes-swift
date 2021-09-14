@@ -137,7 +137,7 @@ extension DetailView: UITableViewDelegate, UITableViewDataSource {
                     return sheroComicsItems.count
                 }
             } else if tableView == tableview_series {
-                if let sheroSeriesItems = shero?.comics?.items {
+                if let sheroSeriesItems = shero?.series?.items {
                     if sheroSeriesItems.count == 0 {
                         view_series.isHidden = true
                         cns_heightSeries.constant = 0
