@@ -10,7 +10,10 @@ import Foundation
 import UIKit
 
 class DetailWireFrame: DetailWireFrameProtocol {
-    
+
+    /// Creates the detail module
+    /// - Parameter data: id of the superhero to loaded
+    /// - Returns: viewcontroller detail of the superhero
     class func createDetailModule(data: Int) -> UIViewController {
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: "DetailVC")
         if let view = viewController as? DetailView {

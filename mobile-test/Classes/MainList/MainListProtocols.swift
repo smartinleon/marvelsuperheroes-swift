@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol MainListViewProtocol: class {
+protocol MainListViewProtocol: AnyObject {
     // PRESENTER -> VIEW
     var presenter: MainListPresenterProtocol? { get set }
     func setupView()
@@ -19,13 +19,13 @@ protocol MainListViewProtocol: class {
     func showData(superheroes: [SuperheroEntity])
 }
 
-protocol MainListWireFrameProtocol: class {
+protocol MainListWireFrameProtocol: AnyObject {
     // PRESENTER -> WIREFRAME
     static func createMainListModule() -> UIViewController
     func presentNewViewDetail(view: MainListViewProtocol, data: Int)
 }
 
-protocol MainListPresenterProtocol: class {
+protocol MainListPresenterProtocol: AnyObject {
     // VIEW -> PRESENTER
     var view: MainListViewProtocol? { get set }
     var interactor: MainListInteractorInputProtocol? { get set }
@@ -40,12 +40,12 @@ protocol MainListPresenterProtocol: class {
     func showDetailView(data: Int)
 }
 
-protocol MainListInteractorOutputProtocol: class {
+protocol MainListInteractorOutputProtocol: AnyObject {
 // INTERACTOR -> PRESENTER
     func interactorPushDataPresenter(superheroes: [SuperheroEntity]?, success: Bool)
 }
 
-protocol MainListInteractorInputProtocol: class {
+protocol MainListInteractorInputProtocol: AnyObject {
     // PRESENTER -> INTERACTOR
     var presenter: MainListInteractorOutputProtocol? { get set }
     var textSearched: String { get set }

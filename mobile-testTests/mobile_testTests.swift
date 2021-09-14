@@ -10,9 +10,9 @@ import XCTest
 
 class mobile_testTests: XCTestCase {
     
-//    API
+    //API
     func testSheroes() throws {
-        let expectation = self.expectation(description: "Retrieved the first 10 superheros")
+        let expectation = self.expectation(description: "Retrieved the first 10 superheroes")
         
         var sheroes: [SuperheroEntity]?
 
@@ -27,7 +27,7 @@ class mobile_testTests: XCTestCase {
     }
     
     func testSheroesOffset() throws {
-        let expectation = self.expectation(description: "Retrieved the second 10 superheros")
+        let expectation = self.expectation(description: "Retrieved the second 10 superheroes")
         
         var sheroes: [SuperheroEntity]?
 
@@ -71,35 +71,24 @@ class mobile_testTests: XCTestCase {
         }
     }
     
-    func testRandomDetailShero() throws {
-        let id = Int.random(in: 0..<100000)
-        let expectation = self.expectation(description: "Retrieved the superhero with id \(id)")
-        
-        var success: Bool = false
-
-        APIClient.shared.externalGetData(id: id) { (data, dataSuccess) in
-            success = dataSuccess
-            expectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 20){ _ in
-            XCTAssertTrue(success)
-        }
-    }
-    
     func testSheroShowNoDataMessageError() throws {
         let expectation = self.expectation(description: "No values message")
         
-        var sheroes: [SuperheroEntity]?
+        var sheroes = [SuperheroEntity]()
 
         APIClient.shared.externalGetData(text: "this is an example of no values") { (data, success) in
-            sheroes = data
+
+            guard let d = data else {
+              return expectation.fulfill()
+            }
+
+            sheroes = d
             
             expectation.fulfill()
         }
         
         waitForExpectations(timeout: 20){ (sh) in
-            XCTAssertEqual(sheroes?.count, 0)
+            XCTAssertEqual(sheroes.count, 0)
         }
     }
     
@@ -111,8 +100,12 @@ class mobile_testTests: XCTestCase {
 
         APIClient.shared.externalGetData(id: 1011334) { (data, success) in
             shero = data?.first
-            
-            APIClient.shared.externalGetSHeroImageData(shero: shero!) { (data, successImageData) in
+
+            guard let superhero = shero else {
+                return XCTAssertNil(shero)
+            }
+
+            APIClient.shared.externalGetSHeroImageData(shero: superhero) { (data, successImageData) in
                 imageData = data
                 
                 expectation.fulfill()
@@ -125,7 +118,7 @@ class mobile_testTests: XCTestCase {
     }
     
     func testOrderedSheroes() throws {
-        let expectation = self.expectation(description: "Order the first 10 superheros")
+        let expectation = self.expectation(description: "Order the first 10 superheroes")
         
         var sheroes: [SuperheroEntity]?
         var sheroesOrdered: [SuperheroEntity]?
@@ -133,10 +126,14 @@ class mobile_testTests: XCTestCase {
         APIClient.shared.externalGetData() { (data, success) in
             sheroes = data
             sheroesOrdered = data
-            
-//          Order descendent
+
+            guard let superheroesOrdered = sheroesOrdered else {
+                return XCTAssertNil(sheroesOrdered)
+            }
+
+            //Order descendent
             let presenter = MainListPresenter()
-            sheroesOrdered = presenter.orderData(data: sheroesOrdered!, ordering: .orderedDescending)
+            sheroesOrdered = presenter.orderData(data: superheroesOrdered, ordering: .orderedDescending)
             
             expectation.fulfill()
         }

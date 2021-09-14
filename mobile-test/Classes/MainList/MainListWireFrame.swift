@@ -10,7 +10,9 @@ import Foundation
 import UIKit
 
 class MainListWireFrame: MainListWireFrameProtocol {
-    
+
+    /// Creates the main module
+    /// - Returns: main view of the application
     class func createMainListModule() -> UIViewController {
         let navController = mainStoryboard.instantiateViewController(withIdentifier: "MainListNC")
         if let view = navController.children.first as? MainListView {
@@ -28,7 +30,11 @@ class MainListWireFrame: MainListWireFrameProtocol {
         }
         return UIViewController()
     }
-    
+
+    /// Loads the detail of a superhero
+    /// - Parameters:
+    ///   - view: current view
+    ///   - data: superhero id to load the data
     func presentNewViewDetail(view: MainListViewProtocol, data: Int) {
         let newDetail = DetailWireFrame.createDetailModule(data: data)
         if let newView = view as? UIViewController {

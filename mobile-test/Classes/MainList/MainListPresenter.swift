@@ -31,14 +31,12 @@ extension MainListPresenter: MainListPresenterProtocol {
         view?.showSpinner()
         interactor?.interactorGetData(text: "", offset: nil)
     }
-    
-//    func loadImageData(searched: Bool, shero: SuperheroEntity) {
-////        Gets the data associated to the url image of the superhero
-//        interactor?.interactorGetImageData(searched: searched, shero: shero)
-//    }
-    
+
+  /// Searching specific superhero name
+  /// - Parameters:
+  ///   - text: text name of superhero, used in searcher
+  ///   - offset: value of the next count elements to return
     func searchData(text: String, offset: Int?) {
-//        Searching specific superhero name
         view?.showSpinner()
         interactor?.interactorGetData(text: text, offset: offset)
     }
@@ -46,39 +44,56 @@ extension MainListPresenter: MainListPresenterProtocol {
     func showFilters() {
         view?.showFilters()
     }
-    
+
+  /// //Sorts the data by comparisong
+  /// - Parameters:
+  ///   - data: superheroes list to order
+  ///   - ordering: comparison, can be ascending or descending
+  /// - Returns: superheroes list ordered
     func orderData(data: [SuperheroEntity], ordering: ComparisonResult) -> [SuperheroEntity] {
-//        Sorts the data by comparisong
         data.sorted { (sh1, sh2) -> Bool in
-                    let superhero1 = sh1.name
-                    let superhero2 = sh2.name
-            return (superhero1!.localizedCaseInsensitiveCompare(superhero2!) ==  ordering)
+            guard let superhero1 = sh1.name else {
+              return false
+            }
+
+            guard let superhero2 = sh2.name else {
+              return false
+            }
+
+            return (superhero1.localizedCaseInsensitiveCompare(superhero2) == ordering)
         }
     }
-    
+
+  /// Presents the detail of the superhero
+  /// - Parameter data: superhero id to load
     func showDetailView(data: Int) {
-//        Presenting the detail of the superhero
-        wireFrame?.presentNewViewDetail(view: view!, data: data)
+        if let v = view {
+            wireFrame?.presentNewViewDetail(view: v, data: data)
+        }
     }
-    
 }
 
 extension MainListPresenter: MainListInteractorOutputProtocol {
 
+    /// Retrieves data from server and presents error or the data
+    /// - Parameters:
+    ///   - superheroes: superheroes data loaded
+    ///   - success: boolean indicating if success or not
     func interactorPushDataPresenter(superheroes: [SuperheroEntity]?, success: Bool) {
-//        Retrieved data from server and presents error or the data
-        if success && superheroes != nil && superheroes!.count > 0{
-            view?.showData(superheroes: superheroes!)
-        }else if success && superheroes != nil && superheroes!.count == 0 {
-            if let vc = view as? UIViewController {
-                Utils.showErrorMessage(vc: vc, message: Utils.localizedString(key: "str_no_more_data"))
+        if let sheros = superheroes {
+            if success && sheros.count > 0 {
+                view?.showData(superheroes: sheros)
+            }else if success && sheros.count == 0 {
+                if let vc = view as? UIViewController {
+                    Utils.showErrorMessage(vc: vc, message: Utils.localizedString(key: "str_no_more_data"))
+                }
+            }else {
+                if let vc = view as? UIViewController {
+                    Utils.showErrorMessage(vc: vc, message: Utils.localizedString(key: "str_error_retrieving_data"))
+                }
             }
-        }else {
-            if let vc = view as? UIViewController {
-                Utils.showErrorMessage(vc: vc, message: Utils.localizedString(key: "str_error_retrieving_data"))
-            }
+
+            view?.hideAndStopSpinner()
         }
-        
-        view?.hideAndStopSpinner()
     }
 }

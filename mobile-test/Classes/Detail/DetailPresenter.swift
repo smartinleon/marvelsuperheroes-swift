@@ -20,16 +20,30 @@ class DetailPresenter: DetailPresenterProtocol{
     func viewDidLoad() {
         view?.setupView()
         view?.showSpinner()
-        interactor?.interactorGetData(id: id!)
+
+        if let idFinal = id {
+            interactor?.interactorGetData(id: idFinal)
+        }else {
+            view?.hideAndStopSpinner()
+
+            if let vc = view as? UIViewController {
+                Utils.showErrorMessage(vc: vc, message: Utils.localizedString(key: "str_error_retrieving_data"))
+            }
+        }
     }
-    
+
+    /// Calls the Utils to load an specific url
+    /// - Parameters:
+    ///   - shero: data to load an specific url
+    ///   - type: type of the url
     func showUrl(shero: SuperheroEntity, type: String) {
-//        Shows an specific url
-        if shero.urls != nil {
-            for urlItem in shero.urls! {
+        if let urls = shero.urls {
+            for urlItem in urls {
                 if urlItem.type == type {
-                    Utils.showUrl(url: urlItem.url!)
-                    break
+                  if let url = urlItem.url {
+                        Utils.showUrl(url: url)
+                        break
+                    }
                 }
             }
         }
@@ -37,11 +51,16 @@ class DetailPresenter: DetailPresenterProtocol{
 }
 
 extension DetailPresenter: DetailInteractorOutputProtocol {
-    
+
+    /// Calls the view with the data or shows an error message
+    /// - Parameters:
+    ///   - shero: data of the superhero to show the detail
+    ///   - success: boolean indicating if success or not
     func interactorPushDataPresenter(shero: SuperheroEntity?, success: Bool) {
-//        Calls the view with the data or shows an error message
-        if success && shero != nil{
-            view?.showData(shero: shero!)
+        if success {
+            if let superhero = shero {
+                view?.showData(shero: superhero)
+            }
         }else {
             if let vc = view as? UIViewController {
                 Utils.showErrorMessage(vc: vc, message: Utils.localizedString(key: "str_error_retrieving_data"))

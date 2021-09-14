@@ -15,10 +15,13 @@ class MainListInteractor: MainListInteractorInputProtocol {
     var textSearched: String = "??????"
     var superheroes = [SuperheroEntity]()
     var superheroesSearched = [SuperheroEntity]()
-    
+
+    /// Calls the API to returns the superheroes from the Marvel's API
+    /// - Parameters:
+    ///   - text: text name of superhero, used in searcher
+    ///   - offset: value of the next count elements to return
     func interactorGetData(text: String, offset: Int?) {
         APIClient.shared.externalGetData(text: text, offset: offset) { [self] data, success in
-//        Returns the data retrieved from the server
             if let dSheroes = data {
                 if success && dSheroes.count > 0{
                     if !text.isEmpty{
@@ -40,7 +43,7 @@ class MainListInteractor: MainListInteractorInputProtocol {
                             
                             let group = DispatchGroup()
                             
-//                            Retrieving images data from server
+                            //Retrieving images data from server
                             for sheroData in superheroesSearched {
                                 group.enter()
                                 interactorGetImageData(searched: true, shero: sheroData, group: group)
@@ -60,7 +63,7 @@ class MainListInteractor: MainListInteractorInputProtocol {
                         
                         let group = DispatchGroup()
                         
-//                            Retrieving images data from server
+                        //Retrieving images data from server
                         for sheroData in superheroes {
                             group.enter()
                             interactorGetImageData(searched: false, shero: sheroData, group: group)
@@ -80,7 +83,12 @@ class MainListInteractor: MainListInteractorInputProtocol {
             }
         }
     }
-    
+
+    /// Calls the API to returns the image of the superhero passed by parameter
+    /// - Parameters:
+    ///   - searched: boolean indicating if user has search superheroes info by searcher
+    ///   - shero: superhero data to load image data
+    ///   - group: dispatch group to load the data synchronized
     func interactorGetImageData(searched: Bool, shero: SuperheroEntity, group: DispatchGroup) {
         APIClient.shared.externalGetSHeroImageData(shero: shero) { [self] data, success in
             if searched {

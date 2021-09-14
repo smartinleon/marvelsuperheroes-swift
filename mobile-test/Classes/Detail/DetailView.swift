@@ -80,7 +80,9 @@ extension DetailView: DetailViewProtocol {
         view_stories.layer.cornerRadius = 5
         view_stories.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }
-    
+
+    /// Shows the superhero data passed by parameter
+    /// - Parameter shero: superhero data to load
     func showData(shero: SuperheroEntity) {
         DispatchQueue.main.async { [self] in
             self.shero = shero
@@ -92,12 +94,18 @@ extension DetailView: DetailViewProtocol {
             }
             
             lbl_name.text = self.shero?.name
-            lbl_description.text = (self.shero?.description!.isEmpty)! ? Utils.localizedString(key: "str_no_description") : self.shero?.description
-            cns_heightDescription.constant = 75 + Utils.heightForView(text: lbl_description.text!, font: lbl_description.font, width: lbl_description.bounds.width)
-            
-            tableview_series.reloadData()
-            tableview_comics.reloadData()
-            tableview_stories.reloadData()
+
+            if let sheroDescription = self.shero?.description {
+                lbl_description.text = sheroDescription.isEmpty ? Utils.localizedString(key: "str_no_description") : sheroDescription
+
+                if let lblDescriptionText = lbl_description.text {
+                  cns_heightDescription.constant = 75 + Utils.heightForView(text: lblDescriptionText, font: lbl_description.font, width: lbl_description.bounds.width)
+                }
+
+                tableview_series.reloadData()
+                tableview_comics.reloadData()
+                tableview_stories.reloadData()
+            }
         }
     }
     
@@ -118,26 +126,32 @@ extension DetailView: DetailViewProtocol {
 
 extension DetailView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        If the superhero doesnt have comics, series or stories, the tableview doesnt appear
+        //If the superhero doesnt have comics, series or stories, the tableview doesnt appear
         if shero != nil {
             if tableView == tableview_comics {
-                if (shero?.comics?.items!.count)! == 0 {
-                    view_comics.isHidden = true
-                    cns_heightComics.constant = 0
+                if let sheroComicsItems = shero?.comics?.items {
+                    if sheroComicsItems.count == 0 {
+                        view_comics.isHidden = true
+                        cns_heightComics.constant = 0
+                    }
+                    return sheroComicsItems.count
                 }
-                return (shero?.comics?.items!.count)!
             } else if tableView == tableview_series {
-                if (shero?.series?.items!.count)! == 0 {
-                    view_series.isHidden = true
-                    cns_heightSeries.constant = 0
+                if let sheroSeriesItems = shero?.comics?.items {
+                    if sheroSeriesItems.count == 0 {
+                        view_series.isHidden = true
+                        cns_heightSeries.constant = 0
+                    }
+                    return sheroSeriesItems.count
                 }
-                return (shero?.series?.items!.count)!
             } else if tableView == tableview_stories {
-                if (shero?.stories?.items!.count)! == 0 {
-                    view_stories.isHidden = true
-                    cns_heightStories.constant = 0
+                if let sheroStoriesItems = shero?.stories?.items {
+                  if sheroStoriesItems.count == 0 {
+                        view_stories.isHidden = true
+                        cns_heightStories.constant = 0
+                    }
+                    return sheroStoriesItems.count
                 }
-                return (shero?.stories?.items!.count)!
             }
         }
         
@@ -145,26 +159,36 @@ extension DetailView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        Shows the data into the specific tableview
+        //Shows the data into the specific tableview
         let cell = tableView.dequeueReusableCell(withIdentifier: "DetailCell", for: indexPath) as? DetailTableViewCell
         
         if shero != nil {
             if tableView == tableview_comics {
-                let comic = shero?.comics?.items![indexPath.row]
-                
-                cell?.lbl_name.text = comic?.name
+                if let sheroComicsItems = shero?.comics?.items {
+                    let comic = sheroComicsItems[indexPath.row]
+
+                    cell?.lbl_name.text = comic.name
+                }
             }else if tableView == tableview_series {
-                let serie = shero?.series?.items![indexPath.row]
-                
-                cell?.lbl_name.text = serie?.name
+                if let sheroSeriesItems = shero?.series?.items {
+                    let serie = sheroSeriesItems[indexPath.row]
+
+                    cell?.lbl_name.text = serie.name
+                }
             }else if tableView == tableview_stories {
-                let story = shero?.stories?.items![indexPath.row]
-                
-                cell?.lbl_name.text = story?.name
+                if let sheroStoriesItems = shero?.stories?.items {
+                    let story = sheroStoriesItems[indexPath.row]
+
+                    cell?.lbl_name.text = story.name
+                }
             }
         }
-        
-        return cell!
+
+        guard let detailCell = cell else {
+            return DetailTableViewCell()
+        }
+
+        return detailCell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

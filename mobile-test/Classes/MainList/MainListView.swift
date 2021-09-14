@@ -40,11 +40,15 @@ class MainListView: UIViewController {
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
-        presenter?.filterData(text: textField.text!, data: superheroes)
+        if let tfText = textField.text {
+            presenter?.filterData(text: tfText, data: superheroes)
+        }
     }
     
     @IBAction func searchAction(_ sender: Any) {
-        presenter?.searchData(text: tf_search.text!, offset: nil)
+        if let tfSearchText = tf_search.text {
+            presenter?.searchData(text: tfSearchText, offset: nil)
+        }
     }
     
     @IBAction func filtersAction(_ sender: Any) {
@@ -58,10 +62,12 @@ class MainListView: UIViewController {
 
 extension MainListView: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: tableView){
-            return false
+        if let touchView = touch.view {
+            if touchView.isDescendant(of: tableView){
+                return false
+            }
         }
-        
+
         return true
     }
 }
@@ -91,23 +97,27 @@ extension MainListView: MainListViewProtocol {
             spinner.hidesWhenStopped = true
         }
     }
-    
+
+    /// Shows the ascending and descending filters
     func showFilters() {
-//        Showing filters
         let optionMenu = UIAlertController(title: nil, message: Utils.localizedString(key: "title_order_by_name"), preferredStyle: .actionSheet)
         let orderAscAction = UIAlertAction.init(title: Utils.localizedString(key: "title_order_asc"), style: .default) { [self] (alert) in
-            superheroesFiltered = (presenter?.orderData(data: superheroesFiltered, ordering: .orderedAscending))!
-            
-            DispatchQueue.main.async {
-                tableView.reloadData()
+            if let sheroFiltered = (presenter?.orderData(data: superheroesFiltered, ordering: .orderedAscending)) {
+              superheroesFiltered = sheroFiltered
+
+              DispatchQueue.main.async {
+                  tableView.reloadData()
+              }
             }
         }
         
         let orderDescAction = UIAlertAction(title:  Utils.localizedString(key: "title_order_desc"), style: .default) { [self] (alert) in
-            superheroesFiltered = (presenter?.orderData(data: superheroesFiltered, ordering: .orderedDescending))!
-            
-            DispatchQueue.main.async {
-                tableView.reloadData()
+            if let sheroFiltered = (presenter?.orderData(data: superheroesFiltered, ordering: .orderedDescending)) {
+              superheroesFiltered = sheroFiltered
+
+              DispatchQueue.main.async {
+                  tableView.reloadData()
+              }
             }
         }
             
@@ -119,7 +129,9 @@ extension MainListView: MainListViewProtocol {
             
         self.present(optionMenu, animated: true, completion: nil)
     }
-    
+
+  /// Loads the superheroes data
+  /// - Parameter superheroes: data
     func showData(superheroes: [SuperheroEntity]) {
         DispatchQueue.main.async { [self] in
             self.superheroes = superheroes
@@ -136,25 +148,24 @@ extension MainListView: UITableViewDelegate, UITableViewDataSource, UIScrollView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        Presenting the cell based on the superhero, if it has not image, calls the presenter to retrieve it
+        //Presenting the cell based on the superhero, if it has not image, calls the presenter to retrieve it
         let shero = superheroesFiltered[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SuperheroCell", for: indexPath) as! SuperheroTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SuperheroCell", for: indexPath) as? SuperheroTableViewCell
         
-        cell.lbl_name.text = shero.name
+        cell?.lbl_name.text = shero.name
         
         if let data = shero.thumbnail?.data {
             DispatchQueue.main.async {
-                cell.iv_shero?.image = UIImage(data: data)
+              cell?.iv_shero?.image = UIImage(data: data)
             }
-        }/*else {
-            let searched = !tf_search.text!.isEmpty
-            DispatchQueue.global(qos: .background).async { [self] in
-                presenter?.loadImageData(searched: searched, shero: shero)
-            }
-        }*/
-        
-        return cell
+        }
+
+        guard let sheroCell = cell else {
+            return SuperheroTableViewCell()
+        }
+
+        return sheroCell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -162,17 +173,20 @@ extension MainListView: UITableViewDelegate, UITableViewDataSource, UIScrollView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        If the user selects the row, we presents the detail
+        //If the user selects the row, we presents the detail
         let shero = superheroesFiltered[indexPath.row]
         if let idShero = shero.id {
             presenter?.showDetailView(data: idShero)
         }
     }
-    
+  
+    /// If the user scrolls to the bottom, we retrieve the next 10 superheroes from the api
+    /// - Parameter scrollView: scrollview of the view
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        If the use scrolls to the bottom, we retrieve the next 10 superheros from the api
         if (scrollView.contentOffset.y == (scrollView.contentSize.height - scrollView.frame.size.height)) {
-            presenter?.searchData(text: tf_search.text!, offset: (superheroesFiltered.count + 1))
+            if let tfSearchText = tf_search.text {
+              presenter?.searchData(text: tfSearchText, offset: (superheroesFiltered.count + 1))
+            }
         }
     }
 }

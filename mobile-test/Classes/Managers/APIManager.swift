@@ -1,16 +1,15 @@
 //
 //  APIManager.swift
-//  VIPER-SimpsonQuotes
+//  mobile-test
 //
-//  Created by Zafar on 1/2/20.
-//  Copyright © 2020 Zafar. All rights reserved.
+//  Created by sergio.martin.leon on 24/05/2021.
 //
 
 import Foundation
 
+let sharedAPIManager = { APIManager() }()
+
 class APIManager {
-    
-    static let shared = { APIManager() }()
     
     lazy var baseURL: String = {
         return Constants.urls.URL_BASE_MARVEL

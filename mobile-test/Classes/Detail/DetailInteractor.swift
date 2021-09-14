@@ -14,20 +14,26 @@ class DetailInteractor: DetailInteractorInputProtocol {
     weak var presenter: DetailInteractorOutputProtocol?
     var shero: SuperheroEntity?
 
+    /// Calls the API with the superhero id to load its data
+    /// - Parameter id: superhero id
     func interactorGetData(id: Int) {
         APIClient.shared.externalGetData(id: id) { [self] data, success in
-            if data != nil{
+            if data != nil {
                 shero = data?.first
             }
 
-            if success && shero != nil {
-                APIClient.shared.externalGetSHeroImageData(shero: shero!, completionHandler: { (data, success) in
+            if success {
+              if let superhero = shero {
+                APIClient.shared.externalGetSHeroImageData(shero: superhero, completionHandler: { (data, success) in
                     if success {
-                        self.shero?.thumbnail?.data = data
+                        shero?.thumbnail?.data = data
                     }
-                    
+
                     presenter?.interactorPushDataPresenter(shero: shero, success: success)
                 })
+              }else {
+                presenter?.interactorPushDataPresenter(shero: shero, success: false)
+              }
             } else {
                 presenter?.interactorPushDataPresenter(shero: shero, success: false)
             }

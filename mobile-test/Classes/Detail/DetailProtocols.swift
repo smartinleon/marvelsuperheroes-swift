@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol DetailViewProtocol: class {
+protocol DetailViewProtocol: AnyObject {
     // PRESENTER -> VIEW
     var presenter: DetailPresenterProtocol? { get set }
     func setupView()
@@ -18,12 +18,12 @@ protocol DetailViewProtocol: class {
     func showData(shero: SuperheroEntity)
 }
 
-protocol DetailWireFrameProtocol: class {
+protocol DetailWireFrameProtocol: AnyObject {
     // PRESENTER -> WIREFRAME
     static func createDetailModule(data: Int) -> UIViewController
 }
 
-protocol DetailPresenterProtocol: class {
+protocol DetailPresenterProtocol: AnyObject {
     // VIEW -> PRESENTER
     var view: DetailViewProtocol? { get set }
     var interactor: DetailInteractorInputProtocol? { get set }
@@ -34,12 +34,12 @@ protocol DetailPresenterProtocol: class {
     func showUrl(shero: SuperheroEntity, type: String)
 }
 
-protocol DetailInteractorOutputProtocol: class {
+protocol DetailInteractorOutputProtocol: AnyObject {
 // INTERACTOR -> PRESENTER
     func interactorPushDataPresenter(shero: SuperheroEntity?, success: Bool)
 }
 
-protocol DetailInteractorInputProtocol: class {
+protocol DetailInteractorInputProtocol: AnyObject {
     // PRESENTER -> INTERACTOR
     var presenter: DetailInteractorOutputProtocol? { get set }
     var shero: SuperheroEntity? { get set }
